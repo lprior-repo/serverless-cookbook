@@ -1,0 +1,11 @@
+{
+  "session_id": "511dbbc8-ebe4-40d3-af32-59ce68bf0037",
+  "transcript_path": "/home/family/.claude/projects/-home-family-src-serverless-cookbook/511dbbc8-ebe4-40d3-af32-59ce68bf0037.jsonl",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "/home/family/src/serverless-cookbook/src/serverless-land-builder.test.ts",
+    "old_string": "    });\n  });\n});",
+    "new_string": "    });\n  });\n\n  describe('buildServerlessTerraformCookbook', () => {\n    it('should build complete terraform cookbook from repositories', async () => {\n      const mockRepos: readonly Repository[] = [\n        { name: 'terraform-aws-lambda', clone_url: 'https://github.com/serverless-tf/terraform-aws-lambda.git' },\n        { name: 'regular-repo', clone_url: 'https://github.com/serverless-tf/regular-repo.git' },\n        { name: 'tf-module-dynamodb', clone_url: 'https://github.com/serverless-tf/tf-module-dynamodb.git' }\n      ];\n      \n      const mockOctokit: OctokitClient = {\n        repos: {\n          listForOrg: vi.fn().mockResolvedValue({ data: mockRepos })\n        }\n      };\n\n      const effect = buildServerlessTerraformCookbook(mockOctokit);\n      const result = await Effect.runPromise(effect);\n      \n      expect(Array.isArray(result)).toBe(true);\n      expect(result.length).toBeGreaterThan(0);\n      expect(result[0]).toHaveProperty('title');\n      expect(result[0]).toHaveProperty('description');\n      expect(result[0]).toHaveProperty('category');\n      expect(result[0]).toHaveProperty('services');\n      expect(result[0]).toHaveProperty('repository_url');\n      expect(result[0]).toHaveProperty('example_code');\n    });\n  });\n});"
+  }
+}

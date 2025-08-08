@@ -1,0 +1,31 @@
+{
+  "testModules": [
+    {
+      "moduleId": "/home/family/src/serverless-cookbook/src/example.test.ts",
+      "tests": [
+        {
+          "name": "should pass with functional programming patterns",
+          "fullName": "ESLint Configuration Test > should pass with functional programming patterns",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/home/family/src/serverless-cookbook/src/serverless-land-builder.test.ts",
+      "tests": [
+        {
+          "name": "should fetch repositories from serverless-tf organization using Effect",
+          "fullName": "ServerlessLandBuilder > ingestServerlessTfModules > should fetch repositories from serverless-tf organization using Effect",
+          "state": "passed"
+        },
+        {
+          "name": "should return typed Repository array",
+          "fullName": "ServerlessLandBuilder > ingestServerlessTfModules > should return typed Repository array",
+          "state": "passed"
+        }
+      ]
+    }
+  ],
+  "unhandledErrors": [],
+  "reason": "passed"
+}
