@@ -1,0 +1,102 @@
+{
+  "patterns": [
+    {
+      "title": "APIGateway-SQS-ReceiveMessages",
+      "description": "Serverless pattern: APIGateway SQS ReceiveMessages using apigateway, sqs, iam",
+      "category": "api",
+      "services": [
+        "apigateway",
+        "sqs",
+        "iam"
+      ],
+      "repository_url": "https://github.com/aws-samples/serverless-patterns/tree/main/APIGateway-SQS-ReceiveMessages",
+      "example_code": "AWSTemplateFormatVersion: '2010-09-09'\nTransform: AWS::Serverless-2016-10-31\nDescription: 'REST API Gateway integration to get messages from SQS (tag:\n  apigw-sqs-rest, ReceiveMessage)'\n\nResources:\n  #   API Gateway\n  AppApi:\n    Type: AWS::ApiGateway::RestApi\n    Properties:\n      Name: apigw-rest-api-http-integration\n      Description: REST API Integration with SQS\n\n  # GET Method with POST AWS Service integration to SQS\n  RootMethodGet:\n    Type: AWS::ApiGateway::Method\n    Properties:\n      RestApiId: !Ref AppApi\n      ResourceId: !GetAtt AppApi.RootResourceId\n      HttpMethod: GET\n      AuthorizationType: NONE\n      RequestParameters:\n        method.request.querystring.VisibilityTimeout: false\n        method.request.querystring.WaitTimeSeconds: false\n        method.request.querystring.MaxNumberOfMessages: false\n        method.request.querystring.AttributeName: false\n      Integration:\n        Credentials: !GetAtt APISQSGatewayRole.Arn\n        IntegrationHttpMethod: POST\n        IntegrationResponses:\n          - StatusCode: '200'\n        PassthroughBehavior: WHEN_NO_TEMPLATES\n        RequestParameters:\n          integration.request.header.Content-Type: '''application/x-www-form-urlencoded'''\n          integration.request.querystring.Action: '''ReceiveMessage'''\n          integration.request.querystring.AttributeName: method.request.querystring.AttributeName\n          integration.request.querystring.MaxNumberOfMessages: method.request.querystring.MaxNumberOfMessages\n          integration.request.querystring.VisibilityTimeout: method.request.querystring.VisibilityTimeout\n          integration.request.querystring.WaitTimeSeconds: method.request.querystring.WaitTimeSeconds\n        Type: AWS\n        Uri: !Join\n          - ''\n          - - 'arn:aws:apigateway:'\n            - !Ref AWS::Region\n            - ':sqs:path/'\n            - !Ref AWS::AccountId\n            - /\n            - !Sub ${MySqsQueue.QueueName}\n      MethodResponses:\n        - ResponseModels:\n          \n\n... (truncated)",
+      "pattern_path": "APIGateway-SQS-ReceiveMessages/template.yaml",
+      "infrastructure_type": "SAM"
+    },
+    {
+      "title": "activemq-lambda-sam-java",
+      "description": "Serverless pattern: activemq lambda sam java using ec2, mq, lambda, secretsmanager",
+      "category": "compute",
+      "services": [
+        "ec2",
+        "mq",
+        "lambda",
+        "secretsmanager"
+      ],
+      "repository_url": "https://github.com/aws-samples/serverless-patterns/tree/main/activemq-lambda-sam-java",
+      "example_code": "AWSTemplateFormatVersion: 2010-09-09\nTransform: AWS::Serverless-2016-10-31\nDescription: Event driven Amazon MQ for ActiveMQ message processing using AWS Lambda (Java)\n\nGlobals:\n  Function:\n    Runtime: java21\n    MemorySize: 512\n\nParameters:\n  username:\n    Type: String\n    AllowedPattern: \"^[a-zA-Z0-9_][a-zA-Z0-9_.@-]{1,98}[a-zA-Z0-9_@.-]$\"\n    Description: Username for accessing ActiveMQ\n  password:\n    Type: String\n    AllowedPattern: \"^(?=(.*\\\\p{Print}){4,})(?!.*[ ,:=])[\\\\p{Print}]{12,}$\"\n    Description: Password for accessing ActiveMQ (must be at least 12 characters long)\n\nResources:\n\n  # Create VPC and related resources \n  VPC: \n    Type: AWS::EC2::VPC\n    Properties:\n      CidrBlock: 10.0.0.0/16\n      EnableDnsHostnames: true\n      EnableDnsSupport: true\n      InstanceTenancy: default\n\n  Subnet:\n    Type: AWS::EC2::Subnet\n    Properties:\n      VpcId: !Ref VPC\n      CidrBlock: 10.0.0.0/24\n\n  InternetGateway:\n    Type: AWS::EC2::InternetGateway\n\n  VPCGatewayAttachment:\n    Type: AWS::EC2::VPCGatewayAttachment\n    Properties:\n      InternetGatewayId: !Ref InternetGateway\n      VpcId: !Ref VPC\n\n  RouteTable:\n    Type: AWS::EC2::RouteTable\n    Properties:\n      VpcId: !Ref VPC\n\n  Route:\n    Type: AWS::EC2::Route\n    DependsOn: VPCGatewayAttachment\n    Properties:\n      RouteTableId: !Ref RouteTable\n      DestinationCidrBlock: 0.0.0.0/0\n      GatewayId: !Ref InternetGateway\n\n  SubnetRouteTableAssociation:\n    Type: AWS::EC2::SubnetRouteTableAssociation  \n    Properties:\n      SubnetId: !Ref Subnet\n      RouteTableId: !Ref RouteTable\n\n  SecurityGroup:\n    Type: AWS::EC2::SecurityGroup\n    Properties:\n      GroupDescription: Allow HTTP traffic\n      VpcId: !Ref VPC\n      SecurityGroupIngress:\n        - IpProtocol: tcp\n          FromPort: 8162\n          ToPort: 8162\n          CidrIp: 0.0.0.0/0\n        - IpProtocol: tcp\n          FromPort: 61617\n          ToPort: 61617\n          CidrIp: 0.0.0.0/0\n      SecurityGroupEgress:\n        - IpProtocol: all\n          CidrIp: 0\n\n... (truncated)",
+      "pattern_path": "activemq-lambda-sam-java/template.yaml",
+      "infrastructure_type": "SAM"
+    },
+    {
+      "title": "activemq-lambda",
+      "description": "Serverless pattern: activemq lambda using ec2, mq, lambda",
+      "category": "compute",
+      "services": [
+        "ec2",
+        "mq",
+        "lambda"
+      ],
+      "repository_url": "https://github.com/aws-samples/serverless-patterns/tree/main/activemq-lambda",
+      "example_code": "AWSTemplateFormatVersion: '2010-09-09'\nTransform: AWS::Serverless-2016-10-31\nDescription: >\n  (uksb-1tthgi812) (tag:activemq-lambda)\n  sam-mq-lambda\n\n  Sample SAM Template for sam-mq-lambda\n\n# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst\nGlobals:\n  Function:\n    Timeout: 3\n    MemorySize: 128\n\nParameters:\n  SecretARN:\n    Type: String\n    Default: \"arn:aws:secretsmanager:us-east-1:733304292857:secret:mq_secret_01-9T06KM\"\n    Description: Enter the ARN for your AWS Secrets Manager secret\n  SecretName:\n    Type: String\n    Default: 'mq_secret_01'\n    Description: Enter the name of your secret\n  MQVpcId: \n    Type: String\n    Default: 'vpc-0d465ccd5c4b66bba'\n    Description: Enter the VPC ID for AmazonMQ   \n  MQSubnetId:  \n    Type: String\n    Default: 'subnet-08220300a8cdd8635'\n    Description: Enter the Subnet for AmazonMQ \n\nResources:\n  MQSecurityGroup:\n    Type: AWS::EC2::SecurityGroup\n    Properties: \n      GroupDescription: \"Security Group for MQ\"\n      GroupName: \"mq-sg\"\n      SecurityGroupEgress: \n        - IpProtocol: \"-1\"\n          CidrIp: 0.0.0.0/0\n      SecurityGroupIngress: \n        - IpProtocol: tcp\n          FromPort: 61617\n          ToPort: 61617\n          CidrIp: 0.0.0.0/0\n        - IpProtocol: tcp\n          FromPort: 8162\n          ToPort: 8162\n          CidrIp: 0.0.0.0/0\n      VpcId: !Ref MQVpcId\n  MQBroker:\n    Type: AWS::AmazonMQ::Broker\n    Properties: \n      AutoMinorVersionUpgrade: false\n      BrokerName: ActiveMQSAM\n      DeploymentMode: SINGLE_INSTANCE\n      EngineType: ACTIVEMQ\n      EngineVersion: \"5.17.3\"\n      HostInstanceType: mq.t3.micro\n      PubliclyAccessible: true\n      Users:\n        - Password: !Sub '{{resolve:secretsmanager:${SecretName}:SecretString:password::}}'\n          Username: !Sub '{{resolve:secretsmanager:${SecretName}:SecretString:username::}}'\n          ConsoleAccess: true\n      SubnetIds:\n           - !Ref MQSubnetId\n      SecurityGroups: [!Ref MQSecurity\n\n... (truncated)",
+      "pattern_path": "activemq-lambda/template.yaml",
+      "infrastructure_type": "SAM"
+    },
+    {
+      "title": "alb-cognito-lambda",
+      "description": "Serverless pattern: alb cognito lambda using ec2, lambda, elasticloadbalancingv2, route53",
+      "category": "compute",
+      "services": [
+        "ec2",
+        "lambda",
+        "elasticloadbalancingv2",
+        "route53"
+      ],
+      "repository_url": "https://github.com/aws-samples/serverless-patterns/tree/main/alb-cognito-lambda",
+      "example_code": "AWSTemplateFormatVersion: 2010-09-09\nTransform: AWS::Serverless-2016-10-31\nDescription: Setup ALB, Cognito and Lambda integration using AWS SAM template (uksb-1tthgi812) (tag:alb-cognito-lambda)\n\nParameters:\n  VpcId:\n    Type: AWS::EC2::VPC::Id\n    Description: VPC for the ALB\n  Subnets:\n    Type: List<AWS::EC2::Subnet::Id>\n    Description: Subnet for the ALB\n  ALBName:\n    Type: String\n    Description: Name of the Application Load Balancer\n  CertificateARN:\n    Type: String\n    Description: ARN of the ACM Certificate you created in PreReq\n  Subdomain:\n    Description: The ALB subdomain of the dns entry. For example, alb.test.myinstance.com, alb is the subdomain of your custom domain you created.\n    Type: String\n  R53HostedZoneId:\n    Type: String\n    Description: Route53 Hosted Zone to configure the A record for ALB (if in same AWS account)\n  ALBHostedZoneId:\n    Type: String\n    Description: ALB Hosted Zone ID to configure the A record for ALB (Find exact ID based on your region from here - https://docs.aws.amazon.com/general/latest/gr/elb.html)\n  LambdaFunctionName:\n    Type: String\n    Description: Name of your Lambda Function\n  LambdaLayerARN:\n    Type: String\n    Description: ARN of your Lambda function PrettyTable Layer\nResources:\n  MyLambdaFunctionPermission:\n    Type: \"AWS::IAM::Role\"\n    Properties:\n      Path: \"/\"\n      RoleName: !Sub \"${LambdaFunctionName}-role\"  \n      AssumeRolePolicyDocument:\n        Version: \"2012-10-17\"\n        Statement:\n        - Effect: \"Allow\"\n          Principal:\n            Service:\n            - \"lambda.amazonaws.com\"\n          Action: \"sts:AssumeRole\"\n      ManagedPolicyArns: \n      - \"arn:aws:iam::aws:policy/AdministratorAccess\"\n      Policies:\n      - PolicyName: !Sub \"${LambdaFunctionName}-policy\"\n        PolicyDocument:\n          Version: \"2012-10-17\"\n          Statement:\n          - Effect: \"Allow\"\n            Action:\n            - \"logs:CreateLogStream\"\n            - \"logs:CreateLogGroup\"\n            - \"logs:PutLogEve\n\n... (truncated)",
+      "pattern_path": "alb-cognito-lambda/template.yaml",
+      "infrastructure_type": "SAM"
+    },
+    {
+      "title": "alb-ecs-java-sam",
+      "description": "Serverless pattern: alb ecs java sam using ec2, ecs, elasticloadbalancingv2, iam",
+      "category": "infrastructure",
+      "services": [
+        "ec2",
+        "ecs",
+        "elasticloadbalancingv2",
+        "iam"
+      ],
+      "repository_url": "https://github.com/aws-samples/serverless-patterns/tree/main/alb-ecs-java-sam",
+      "example_code": "AWSTemplateFormatVersion: 2010-09-09\nTransform: AWS::Serverless-2016-10-31\nDescription: This template deploys ALB with ECS Fargate cluster to deploy a containerised Spring Boot Application\n\nParameters:\n  ImageURI:\n    Type: String\n    Description: The URI of the image to deploy\n\nResources:\n  VPC: \n    Type: AWS::EC2::VPC\n    Properties:\n      CidrBlock: 10.0.0.0/16\n  \n  PublicSubnet1:\n    Type: AWS::EC2::Subnet\n    Properties:\n      VpcId: !Ref VPC\n      CidrBlock: 10.0.0.0/24\n      AvailabilityZone: !Select [0, !GetAZs '']\n  \n  PublicSubnet2: \n    Type: AWS::EC2::Subnet\n    Properties: \n      VpcId: !Ref VPC\n      CidrBlock: 10.0.1.0/24\n      AvailabilityZone: !Select [1, !GetAZs '']\n\n  InternetGateway:\n    Type: AWS::EC2::InternetGateway\n  \n  VPCGatewayAttachment:\n    Type: AWS::EC2::VPCGatewayAttachment\n    Properties:\n      VpcId: !Ref VPC\n      InternetGatewayId: !Ref InternetGateway\n\n  PublicRouteTable:\n    Type: AWS::EC2::RouteTable\n    Properties:\n      VpcId: !Ref VPC\n  \n  PublicRoute: \n    Type: AWS::EC2::Route\n    DependsOn: VPCGatewayAttachment\n    Properties:\n      RouteTableId: !Ref PublicRouteTable\n      DestinationCidrBlock: '0.0.0.0/0'\n      GatewayId: !Ref InternetGateway\n\n  PublicSubnet1RouteTableAssociation:\n    Type: AWS::EC2::SubnetRouteTableAssociation  \n    Properties:\n      SubnetId: !Ref PublicSubnet1\n      RouteTableId: !Ref PublicRouteTable\n\n  PublicSubnet2RouteTableAssociation:  \n    Type: AWS::EC2::SubnetRouteTableAssociation\n    Properties:\n      SubnetId: !Ref PublicSubnet2\n      RouteTableId: !Ref PublicRouteTable\n\n  ALBSecurityGroup:\n    Type: AWS::EC2::SecurityGroup\n    Properties:\n      GroupDescription: Allow incoming HTTP traffic\n      VpcId: !Ref VPC\n      SecurityGroupIngress:\n        - CidrIp: 0.0.0.0/0 \n          IpProtocol: tcp\n          FromPort: 80\n          ToPort: 80\n  MicroServiceSecurityGroup:\n    Type: AWS::EC2::SecurityGroup\n    Properties:\n      GroupDescription: Allow incoming HTTP traffic\n      VpcId: !Ref VPC\n  \n\n... (truncated)",
+      "pattern_path": "alb-ecs-java-sam/template.yaml",
+      "infrastructure_type": "SAM"
+    }
+  ],
+  "metadata": {
+    "generated_at": "2025-08-09T03:50:50.242Z",
+    "total_patterns": 5,
+    "categories": [
+      "api",
+      "compute",
+      "infrastructure"
+    ],
+    "infrastructure_types": [
+      "SAM"
+    ],
+    "source_repository": "aws-samples/serverless-patterns",
+    "services": [
+      "apigateway",
+      "ec2",
+      "ecs",
+      "elasticloadbalancingv2",
+      "iam",
+      "lambda",
+      "mq",
+      "route53",
+      "secretsmanager",
+      "sqs"
+    ]
+  }
+}

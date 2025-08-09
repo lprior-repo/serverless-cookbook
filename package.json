@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@effect/schema": "^0.75.5",
+    "@octokit/graphql": "^9.0.1",
     "@octokit/rest": "^21.0.2",
     "@trpc/server": "^10.45.0",
     "cors": "^2.8.5",

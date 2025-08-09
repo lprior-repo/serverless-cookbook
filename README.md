@@ -1,14 +1,12 @@
 # Serverless Terraform Cookbook
 
-A TypeScript scraper that fetches Terraform patterns from GitHub organizations and generates a structured cookbook of serverless infrastructure patterns.
+A TypeScript scraper that fetches Terraform patterns from GitHub using GraphQL API for efficient data extraction.
 
 ## Features
 
-- **GitHub API Integration**: Fetches repositories from specified GitHub organizations
-- **Terraform Pattern Detection**: Automatically identifies and filters terraform modules
-- **AWS Service Extraction**: Parses terraform files to identify AWS services used
-- **Pattern Categorization**: Classifies patterns by service type (compute, database, storage, etc.)
-- **JSON Output**: Generates structured cookbook with metadata and timestamps
+- **GraphQL API Integration**: Single query fetches all repository data instead of hundreds of REST calls
+- **Terraform-Only Filtering**: Extracts only Terraform patterns from serverless repositories  
+- **Image Extraction**: Includes architecture diagrams and images from patterns
 - **Effect.ts Integration**: Robust error handling and functional programming approach
 - **100% Test Coverage**: TDD-driven development with comprehensive testing
 - **Type Safety**: Full TypeScript with strict functional programming patterns
@@ -20,23 +18,19 @@ A TypeScript scraper that fetches Terraform patterns from GitHub organizations a
    npm install
    ```
 
-2. **Configure GitHub token** (optional, for higher rate limits):
+2. **Configure GitHub token**:
    ```bash
-   cp .env.example .env
-   # Edit .env and add your GitHub token
+   # Token already configured in .env
+   GITHUB_TOKEN=your_token_here
    ```
 
-3. **Build the project**:
+3. **Build and run the Terraform scraper**:
    ```bash
    npm run build
+   node dist/github-graphql.js
    ```
 
-4. **Run the scraper**:
-   ```bash
-   npm run scrape
-   ```
-
-This will generate a `serverless-cookbook.json` file in the current directory with all discovered patterns.
+This will fetch Terraform patterns using a single GraphQL query instead of multiple REST API calls.
 
 ## Scripts
 

@@ -1,11 +1,11 @@
 {
-  "session_id": "511dbbc8-ebe4-40d3-af32-59ce68bf0037",
-  "transcript_path": "/home/family/.claude/projects/-home-family-src-serverless-cookbook/511dbbc8-ebe4-40d3-af32-59ce68bf0037.jsonl",
-  "hook_event_name": "PreToolUse",
+  "session_id": "18bf9cea-ffab-4eef-900e-da7c2ae194e6",
+  "transcript_path": "/home/family/.claude/projects/-home-family-src-serverless-cookbook/18bf9cea-ffab-4eef-900e-da7c2ae194e6.jsonl",
+  "hook_event_name": "PostToolUse",
   "tool_name": "Edit",
   "tool_input": {
-    "file_path": "/home/family/src/serverless-cookbook/src/serverless-land-builder.test.ts",
-    "old_string": "    });\n  });\n});",
-    "new_string": "    });\n  });\n\n  describe('buildServerlessTerraformCookbook', () => {\n    it('should build complete terraform cookbook from repositories', async () => {\n      const mockRepos: readonly Repository[] = [\n        { name: 'terraform-aws-lambda', clone_url: 'https://github.com/serverless-tf/terraform-aws-lambda.git' },\n        { name: 'regular-repo', clone_url: 'https://github.com/serverless-tf/regular-repo.git' },\n        { name: 'tf-module-dynamodb', clone_url: 'https://github.com/serverless-tf/tf-module-dynamodb.git' }\n      ];\n      \n      const mockOctokit: OctokitClient = {\n        repos: {\n          listForOrg: vi.fn().mockResolvedValue({ data: mockRepos })\n        }\n      };\n\n      const effect = buildServerlessTerraformCookbook(mockOctokit);\n      const result = await Effect.runPromise(effect);\n      \n      expect(Array.isArray(result)).toBe(true);\n      expect(result.length).toBeGreaterThan(0);\n      expect(result[0]).toHaveProperty('title');\n      expect(result[0]).toHaveProperty('description');\n      expect(result[0]).toHaveProperty('category');\n      expect(result[0]).toHaveProperty('services');\n      expect(result[0]).toHaveProperty('repository_url');\n      expect(result[0]).toHaveProperty('example_code');\n    });\n  });\n});"
+    "file_path": "/home/family/src/serverless-cookbook/src/github-graphql-enhanced.test.ts",
+    "old_string": "    expect(mockGraphqlClient).toHaveBeenCalledTimes(3); // 2 failures + 1 success\n  }, 10000);\n});",
+    "new_string": "    expect(mockGraphqlClient).toHaveBeenCalledTimes(3); // 2 failures + 1 success\n  }, 10000);\n\n  it('should monitor and log rate limit information', async () => {\n    // Arrange\n    const responsWithRateLimit = {\n      repository: { object: { entries: [] } },\n      rateLimit: {\n        remaining: 4500,\n        limit: 5000,\n        cost: 1\n      }\n    };\n\n    const consoleSpy = vi.spyOn(console, 'log');\n    mockGraphqlClient.mockResolvedValue(responsWithRateLimit);\n\n    // Act\n    await Effect.runPromise(fetchTerraformPatternsWithRetries());\n\n    // Assert\n    expect(consoleSpy).toHaveBeenCalledWith(\n      expect.stringContaining('Rate limit: 4500/5000')\n    );\n    \n    consoleSpy.mockRestore();\n  });\n});"
   }
 }
