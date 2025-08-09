@@ -3,15 +3,15 @@ export interface Repository {
   readonly clone_url: string;
 }
 
-export interface GitHubResponse {
-  readonly data: Readonly<Repository[]>;
-}
+export type GitHubResponse = Readonly<{
+  readonly data: Readonly<readonly Repository[]>;
+}>;
 
-export interface OctokitClient {
-  readonly repos: {
+export type OctokitClient = Readonly<{
+  readonly repos: Readonly<{
     readonly listForOrg: (params: ListOrgReposParams) => Promise<GitHubResponse>;
-  };
-}
+  }>;
+}>;
 
 export interface ListOrgReposParams {
   readonly org: string;
@@ -30,16 +30,16 @@ export interface FileResponse {
   readonly data: FileContent;
 }
 
-export interface RepositoryContents {
+export type RepositoryContents = Readonly<{
   readonly repository: Repository;
-  readonly files: Readonly<FileContent[]>;
-}
+  readonly files: Readonly<readonly FileContent[]>;
+}>;
 
-export interface TerraformPattern {
+export type TerraformPattern = Readonly<{
   readonly title: string;
   readonly description: string;
   readonly category: string;
-  readonly services: Readonly<string[]>;
+  readonly services: Readonly<readonly string[]>;
   readonly repository_url: string;
   readonly example_code: string;
-}
+}>;

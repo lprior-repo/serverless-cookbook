@@ -3,7 +3,10 @@ import { writeFile } from 'fs/promises';
 import { config } from 'dotenv';
 import { type OctokitClient, type Repository, type ListOrgReposParams, type TerraformPattern } from './types';
 
-config();
+const loadEnvironmentConfig = (): string => {
+  config();
+  return 'loaded';
+};
 
 const createOrgParams = (): ListOrgReposParams => ({
   org: 'serverless-tf',
@@ -11,7 +14,7 @@ const createOrgParams = (): ListOrgReposParams => ({
   per_page: 100
 });
 
-export const ingestServerlessTfModules = (octokit: OctokitClient): Effect.Effect<Readonly<readonly Repository[]>, Error> => 
+export const ingestServerlessTfModules = (octokit: Readonly<OctokitClient>): Effect.Effect<Readonly<readonly Repository[]>, Error> => 
   Effect.tryPromise({
     try: async (): Promise<Readonly<readonly Repository[]>> => {
       const params = createOrgParams();
@@ -29,31 +32,36 @@ const isTerraformModule = (repository: Repository): boolean =>
 export const filterTerraformModules = (repositories: Readonly<readonly Repository[]>): Readonly<readonly Repository[]> =>
   repositories.filter(isTerraformModule) as Readonly<readonly Repository[]>;
 
+const createServicePrefixMap = (): Record<string, string> => ({
+  'lambda_function': 'lambda',
+  'lambda_permission': 'lambda',
+  'lambda_alias': 'lambda',
+  'iam_role': 'iam',
+  'iam_policy': 'iam',
+  'iam_role_policy_attachment': 'iam',
+  's3_bucket': 's3',
+  's3_object': 's3',
+  'dynamodb_table': 'dynamodb',
+  'dynamodb_item': 'dynamodb'
+});
+
+const extractServiceFromMatch = (match: string): string => {
+  const result = match.match(/aws_(\w+)/);
+  const fullType = result?.[1] || '';
+  
+  return fullType ? getServiceName(fullType) : '';
+};
+
+const getServiceName = (fullType: string): string => {
+  const servicePrefixes = createServicePrefixMap();
+  const fallback = fullType.split('_')[0] || '';
+  return servicePrefixes[fullType] ?? fallback;
+};
+
 const extractAwsServices = (terraformContent: string): Readonly<readonly string[]> => {
   const serviceMatches = terraformContent.match(/resource\s+"aws_(\w+)/g) || [];
   return Array.from(new Set(
-    serviceMatches.map((match: string): string => {
-      const result = match.match(/aws_(\w+)/);
-      const fullType = result?.[1];
-      
-      if (!fullType) return '';
-      
-      const servicePrefixes: Record<string, string> = {
-        'lambda_function': 'lambda',
-        'lambda_permission': 'lambda',
-        'lambda_alias': 'lambda',
-        'iam_role': 'iam',
-        'iam_policy': 'iam',
-        'iam_role_policy_attachment': 'iam',
-        's3_bucket': 's3',
-        's3_object': 's3',
-        'dynamodb_table': 'dynamodb',
-        'dynamodb_item': 'dynamodb'
-      };
-      
-      const fallback = fullType.split('_')[0];
-      return servicePrefixes[fullType] ?? (fallback || '');
-    }).filter((service: string): boolean => service !== '')
+    serviceMatches.map(extractServiceFromMatch).filter((service: string): boolean => service !== '')
   )) as Readonly<readonly string[]>;
 };
 
@@ -82,7 +90,7 @@ export const extractTerraformPattern = (
   };
 };
 
-export const buildServerlessTerraformCookbook = (octokit: OctokitClient): Effect.Effect<Readonly<readonly TerraformPattern[]>, Error> =>
+export const buildServerlessTerraformCookbook = (octokit: Readonly<OctokitClient>): Effect.Effect<Readonly<readonly TerraformPattern[]>, Error> =>
   Effect.gen(function* () {
     const repositories = yield* ingestServerlessTfModules(octokit);
     const terraformRepos = filterTerraformModules(repositories);
@@ -114,12 +122,14 @@ export const generateJsonOutput = (patterns: Readonly<readonly TerraformPattern[
 export const writeJsonToFile = (jsonContent: string): Effect.Effect<void, Error> =>
   Effect.tryPromise({
     try: async (): Promise<void> => {
+      loadEnvironmentConfig();
       await writeFile('./serverless-cookbook.json', jsonContent, 'utf8');
+      return Promise.resolve();
     },
     catch: (error: unknown): Error => new Error(String(error))
   });
 
-export const buildAndSaveCookbook = (octokit: OctokitClient): Effect.Effect<void, Error> =>
+export const buildAndSaveCookbook = (octokit: Readonly<OctokitClient>): Effect.Effect<void, Error> =>
   Effect.gen(function* () {
     const patterns = yield* buildServerlessTerraformCookbook(octokit);
     const jsonOutput = generateJsonOutput(patterns);
