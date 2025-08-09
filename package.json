@@ -10,6 +10,7 @@
     "build": "tsc",
     "start": "NODE_ENV=production node dist/index.js",
     "fetch": "tsx src/fetcher.ts",
+    "scrape": "node dist/run-scraper.js",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "lint": "eslint . --ext .ts,.js"

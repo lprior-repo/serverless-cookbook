@@ -4,7 +4,7 @@ export interface Repository {
 }
 
 export interface GitHubResponse {
-  readonly data: readonly Repository[];
+  readonly data: Readonly<Repository[]>;
 }
 
 export interface OctokitClient {
@@ -32,14 +32,14 @@ export interface FileResponse {
 
 export interface RepositoryContents {
   readonly repository: Repository;
-  readonly files: readonly FileContent[];
+  readonly files: Readonly<FileContent[]>;
 }
 
 export interface TerraformPattern {
   readonly title: string;
   readonly description: string;
   readonly category: string;
-  readonly services: readonly string[];
+  readonly services: Readonly<string[]>;
   readonly repository_url: string;
   readonly example_code: string;
 }
