@@ -41,3 +41,8 @@ terraform_patterns/
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# TDD Guard development data
+.claude/tdd-guard/
+serverless-cookbook.json
+
