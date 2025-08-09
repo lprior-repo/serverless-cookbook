@@ -79,20 +79,37 @@ export default [
   {
     // Exception rules for test files
     files: ['**/*.test.{js,ts}', '**/__tests__/**/*.{js,ts}'],
+    languageOptions: {
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        test: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        jest: 'readonly',
+      },
+    },
     rules: {
       'functional/no-expression-statements': 'off',
       'functional/no-return-void': 'off',
       'functional/functional-parameters': 'off',
+      'functional/no-conditional-statements': 'off',
+      'functional/immutable-data': 'off',
       'max-lines-per-function': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
       'no-console': 'off',
+      'no-undef': 'off',
     },
   },
   {
     // Exception rules for configuration files
-    files: ['*.config.{js,ts}', 'eslint.config.js', 'vitest.config.ts'],
+    files: ['*.config.{js,ts,cjs}', 'eslint.config.js', 'jest.config.js', 'jest.config.cjs'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -102,6 +119,10 @@ export default [
       },
       globals: {
         process: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
       },
     },
     rules: {

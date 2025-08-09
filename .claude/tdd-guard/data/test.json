@@ -1,11 +1,86 @@
 {
   "testModules": [
     {
-      "moduleId": "/home/family/src/serverless-cookbook/src/github-graphql-enhanced.test.ts",
+      "moduleId": "/home/family/src/serverless-cookbook/src/serverless-tf-extractor.test.ts",
       "tests": [
         {
-          "name": "should retry on 502 errors with exponential backoff",
-          "fullName": "GitHub GraphQL Enhanced with Retries > should retry on 502 errors with exponential backoff",
+          "name": "should extract all AWS services with repository and example links",
+          "fullName": "Comprehensive AWS Serverless Scraper should extract all AWS services with repository and example links",
+          "state": "pending"
+        },
+        {
+          "name": "should use real Terraform AWS module repository URLs",
+          "fullName": "Comprehensive AWS Serverless Scraper should use real Terraform AWS module repository URLs",
+          "state": "pending"
+        },
+        {
+          "name": "should include all 18 AWS serverless services",
+          "fullName": "Comprehensive AWS Serverless Scraper should include all 18 AWS serverless services",
+          "state": "pending"
+        },
+        {
+          "name": "should include documentation with README, variables, and outputs for each service",
+          "fullName": "Comprehensive AWS Serverless Scraper should include documentation with README, variables, and outputs for each service",
+          "state": "pending"
+        },
+        {
+          "name": "should fetch real data from GitHub using GITHUB_TOKEN when available",
+          "fullName": "Comprehensive AWS Serverless Scraper should fetch real data from GitHub using GITHUB_TOKEN when available",
+          "state": "passed"
+        },
+        {
+          "name": "should populate real README content when GITHUB_TOKEN is available",
+          "fullName": "Comprehensive AWS Serverless Scraper should populate real README content when GITHUB_TOKEN is available",
+          "state": "passed"
+        },
+        {
+          "name": "should return basic catalog when GITHUB_TOKEN is missing",
+          "fullName": "Comprehensive AWS Serverless Scraper should return basic catalog when GITHUB_TOKEN is missing",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/home/family/src/serverless-cookbook/src/scraper-runner.test.ts",
+      "tests": [
+        {
+          "name": "should generate JSON file with all 12 AWS services",
+          "fullName": "scraper-runner should generate JSON file with all 12 AWS services",
+          "state": "passed"
+        },
+        {
+          "name": "should write terraform-aws-services.json file",
+          "fullName": "scraper-runner should write terraform-aws-services.json file",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/home/family/src/serverless-cookbook/src/github-repository-service.test.ts",
+      "tests": [
+        {
+          "name": "should fetch repository README content",
+          "fullName": "GitHub Repository Service should fetch repository README content",
+          "state": "passed"
+        },
+        {
+          "name": "should extract owner and repo from GitHub URL",
+          "fullName": "GitHub Repository Service should extract owner and repo from GitHub URL",
+          "state": "passed"
+        },
+        {
+          "name": "should fail for invalid GitHub URL",
+          "fullName": "GitHub Repository Service should fail for invalid GitHub URL",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/home/family/src/serverless-cookbook/src/environment-validator.test.ts",
+      "tests": [
+        {
+          "name": "should validate GitHub token is present for real data extraction",
+          "fullName": "Environment Validator should validate GitHub token is present for real data extraction",
           "state": "passed"
         }
       ]
