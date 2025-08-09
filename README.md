@@ -1,16 +1,17 @@
-# Serverless Terraform Fetcher
+# Serverless Terraform Cookbook
 
-A Node.js application that fetches and indexes Terraform patterns from AWS Serverless Land using Express, tRPC, and Zod for type safety.
+A TypeScript scraper that fetches Terraform patterns from GitHub organizations and generates a structured cookbook of serverless infrastructure patterns.
 
 ## Features
 
-- Fetches Terraform patterns from the AWS Serverless Patterns repository
-- Generates searchable index of patterns with services and pattern types  
-- Provides both tRPC and REST API to query patterns
-- Type-safe validation using Zod schemas
-- Simple web interface to browse and search patterns
-- Real-time pattern search and filtering
-- TDD-focused development with automated testing
+- **GitHub API Integration**: Fetches repositories from specified GitHub organizations
+- **Terraform Pattern Detection**: Automatically identifies and filters terraform modules
+- **AWS Service Extraction**: Parses terraform files to identify AWS services used
+- **Pattern Categorization**: Classifies patterns by service type (compute, database, storage, etc.)
+- **JSON Output**: Generates structured cookbook with metadata and timestamps
+- **Effect.ts Integration**: Robust error handling and functional programming approach
+- **100% Test Coverage**: TDD-driven development with comprehensive testing
+- **Type Safety**: Full TypeScript with strict functional programming patterns
 
 ## Quick Start
 
@@ -19,65 +20,100 @@ A Node.js application that fetches and indexes Terraform patterns from AWS Serve
    npm install
    ```
 
-2. **Fetch patterns** (optional - creates local index):
+2. **Configure GitHub token** (optional, for higher rate limits):
    ```bash
-   npm run fetch
+   cp .env.example .env
+   # Edit .env and add your GitHub token
    ```
 
-3. **Start the development server**:
+3. **Build the project**:
    ```bash
-   npm run dev
+   npm run build
    ```
 
-4. **Open your browser** to `http://localhost:3000`
+4. **Run the scraper**:
+   ```bash
+   npm run scrape
+   ```
 
-## API Endpoints
-
-### tRPC Endpoints (Recommended)
-- `POST /api/trpc/patterns.getAll` - Get all patterns
-- `POST /api/trpc/patterns.getByName` - Get pattern by name
-- `POST /api/trpc/patterns.search` - Search patterns
-- `POST /api/trpc/patterns.getByService` - Filter by AWS service
-- `POST /api/trpc/patterns.getByType` - Filter by pattern type
-- `POST /api/trpc/patterns.getServices` - Get all available services
-- `POST /api/trpc/patterns.getPatternTypes` - Get all pattern types
-
-### REST Endpoints (Legacy)
-- `GET /api/patterns` - Get all patterns
-- `GET /api/patterns/:name` - Get pattern by name
-- `GET /api/patterns/search/:query` - Search patterns
-- `GET /api/patterns/by-service/:service` - Filter by AWS service
-- `GET /api/patterns/by-type/:type` - Filter by pattern type
-- `GET /api/services` - Get all available services
-- `GET /api/pattern-types` - Get all pattern types
+This will generate a `serverless-cookbook.json` file in the current directory with all discovered patterns.
 
 ## Scripts
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build TypeScript for production
-- `npm run start` - Start production server
-- `npm run fetch` - Fetch latest patterns from AWS Serverless Land
+- `npm run build` - Build TypeScript to JavaScript
+- `npm run scrape` - Run the cookbook scraper
+- `npm run test` - Run tests with Vitest
 - `npm run typecheck` - Run TypeScript type checking
-- `npm run test` - Run tests with Vitest and TDD guard
+- `npm run lint` - Run ESLint with functional programming rules
 
 ## Configuration
 
-Set `GITHUB_TOKEN` environment variable for higher rate limits when fetching patterns.
+Create a `.env` file with your GitHub token for higher API rate limits:
 
-## Structure
+```bash
+GITHUB_TOKEN=your_github_token_here
+```
 
-- `src/index.ts` - Main server application
-- `src/fetcher.ts` - Pattern fetching and indexing logic
-- `src/schemas.ts` - Zod validation schemas
-- `src/services/` - Business logic services
-- `src/routers/` - tRPC route definitions
-- `terraform_patterns/` - Generated pattern index and documentation
-- `public/` - Static assets (optional)
+## Output Format
 
-## Type Safety
+The scraper generates a JSON file with the following structure:
 
-This application uses Zod for runtime validation and TypeScript for compile-time type checking. All API inputs and outputs are validated against schemas defined in `src/schemas.ts`.
+```json
+{
+  "patterns": [
+    {
+      "title": "terraform-aws-lambda",
+      "description": "aws lambda using lambda",
+      "category": "compute",
+      "services": ["lambda"],
+      "repository_url": "https://github.com/org/repo.git",
+      "example_code": "resource \"aws_lambda_function\" \"example\" { ... }"
+    }
+  ],
+  "metadata": {
+    "generated_at": "2025-08-09T01:37:00.776Z",
+    "total_patterns": 1,
+    "categories": ["compute"]
+  }
+}
+```
+
+## Architecture
+
+Built with functional programming principles using:
+
+- **Effect.ts** - Side effect management and error handling
+- **TypeScript** - Type safety and compile-time validation
+- **Vitest** - Testing framework with TDD approach
+- **ESLint** - Functional programming rule enforcement
+- **Octokit** - GitHub API client
+
+## Project Structure
+
+```
+src/
+├── serverless-land-builder.ts    # Main scraper implementation
+├── serverless-land-builder.test.ts # Comprehensive test suite
+├── types.ts                      # TypeScript type definitions
+└── run-scraper.ts               # CLI runner script (future)
+```
+
+## Development
+
+This project follows strict TDD and functional programming principles:
+
+- All functions are pure with no side effects
+- Immutable data structures throughout
+- Effect.ts for managing side effects
+- 100% test coverage requirement
+- ESLint functional programming rules enforced
 
 ## Testing
 
-The project uses Vitest for testing with TDD guard integration for continuous test running. Tests are located in `__tests__` directories alongside the source files.
+Run the test suite:
+
+```bash
+npm test
+```
+
+Tests cover all functionality including GitHub API integration, pattern extraction, JSON generation, and file operations.

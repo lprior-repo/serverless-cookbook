@@ -1,6 +1,9 @@
 import { Effect } from 'effect';
 import { writeFile } from 'fs/promises';
+import { config } from 'dotenv';
 import { type OctokitClient, type Repository, type ListOrgReposParams, type TerraformPattern } from './types';
+
+config();
 
 const createOrgParams = (): ListOrgReposParams => ({
   org: 'serverless-tf',
