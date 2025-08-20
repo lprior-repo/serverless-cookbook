@@ -1,0 +1,163 @@
+site_name: Serverless Terraform Cookbook
+site_description: Production-ready Terraform patterns for AWS serverless architecture
+site_url: https://your-org.github.io/serverless-cookbook
+
+repo_name: your-org/serverless-cookbook
+repo_url: https://github.com/your-org/serverless-cookbook
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+  icon:
+    logo: fontawesome/solid/cloud
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/your-org
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/your-org
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+      emoji_index: !!python/name:pymdownx.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      normalize_issue_symbols: true
+      repo_url_shorthand: true
+      user: your-org
+      repo: serverless-cookbook
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      auto_append:
+        - includes/mkdocs.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+plugins:
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Overview: getting-started/index.md
+    - Quick Start: getting-started/quick-start.md
+    - Prerequisites: getting-started/prerequisites.md
+  - Patterns:
+    - patterns/index.md
+    - Compute:
+      - patterns/compute/index.md
+      - Lambda: patterns/compute/lambda.md
+    - Integration:
+      - patterns/integration/index.md
+      - AppSync: patterns/integration/appsync.md
+      - EventBridge: patterns/integration/eventbridge.md
+      - SNS: patterns/integration/sns.md
+      - Step Functions: patterns/integration/step-functions.md
+    - Storage:
+      - patterns/storage/index.md
+      - Aurora Serverless: patterns/storage/aurora-serverless.md
+      - CloudFront: patterns/storage/cloudfront.md
+      - DynamoDB: patterns/storage/dynamodb.md
+      - RDS Proxy: patterns/storage/rds-proxy.md
+      - S3: patterns/storage/s3.md
+    - Security:
+      - patterns/security/index.md
+      - AppConfig: patterns/security/appconfig.md
+      - Secrets Manager: patterns/security/secrets-manager.md
+      - SSM Parameter Store: patterns/security/ssm-parameter-store.md
+  - Contributing:
+    - contributing/index.md

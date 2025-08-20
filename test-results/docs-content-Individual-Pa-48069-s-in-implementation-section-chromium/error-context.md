@@ -1,0 +1,254 @@
+# Page snapshot
+
+```yaml
+- link "Skip to content":
+  - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#lambda
+- banner:
+  - navigation "Header":
+    - link "Serverless Terraform Cookbook":
+      - /url: http://127.0.0.1:8000/serverless-cookbook/
+      - img
+    - text: Serverless Terraform Cookbook Lambda
+    - radio "Switch to light mode"
+    - img
+    - radio "Switch to dark mode"
+    - radio "Switch to system preference"
+    - dialog:
+      - search:
+        - textbox "Search"
+        - img
+        - navigation "Search":
+          - link "Share":
+            - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/?q=
+            - img
+          - button "Clear":
+            - img
+        - text: Type to start searching
+    - link "your-org/serverless-cookbook":
+      - /url: https://github.com/your-org/serverless-cookbook
+      - img
+      - text: your-org/serverless-cookbook
+  - navigation "Tabs":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/
+      - listitem:
+        - link "Getting Started":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/getting-started/
+      - listitem:
+        - link "Patterns":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/
+      - listitem:
+        - link "Contributing":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/contributing/
+- main:
+  - navigation "Navigation":
+    - list:
+      - listitem:
+        - link "Patterns":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/
+        - navigation:
+          - list:
+            - listitem:
+              - link "Compute":
+                - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/
+              - navigation:
+                - list:
+                  - listitem:
+                    - link "Lambda":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/
+            - listitem:
+              - link "Integration":
+                - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/integration/
+              - navigation:
+                - list:
+                  - listitem:
+                    - link "AppSync":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/integration/appsync/
+                  - listitem:
+                    - link "EventBridge":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/integration/eventbridge/
+                  - listitem:
+                    - link "SNS":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/integration/sns/
+                  - listitem:
+                    - link "Step Functions":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/integration/step-functions/
+            - listitem:
+              - link "Storage":
+                - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/storage/
+              - navigation:
+                - list:
+                  - listitem:
+                    - link "Aurora Serverless":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/storage/aurora-serverless/
+                  - listitem:
+                    - link "CloudFront":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/storage/cloudfront/
+                  - listitem:
+                    - link "DynamoDB":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/storage/dynamodb/
+                  - listitem:
+                    - link "RDS Proxy":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/storage/rds-proxy/
+                  - listitem:
+                    - link "S3":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/storage/s3/
+            - listitem:
+              - link "Security":
+                - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/security/
+              - navigation:
+                - list:
+                  - listitem:
+                    - link "AppConfig":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/security/appconfig/
+                  - listitem:
+                    - link "Secrets Manager":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/security/secrets-manager/
+                  - listitem:
+                    - link "SSM Parameter Store":
+                      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/security/ssm-parameter-store/
+  - navigation "Table of contents":
+    - text: Table of contents
+    - list:
+      - listitem:
+        - link "At a Glance":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#at-a-glance
+      - listitem:
+        - link "When to Use Lambda":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#when-to-use-lambda
+      - listitem:
+        - link "Architecture":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#architecture
+      - listitem:
+        - link "Implementation":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#implementation
+      - listitem:
+        - link "Next Steps":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#next-steps
+      - listitem:
+        - link "Contributing":
+          - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#contributing
+  - article:
+    - link "Edit this page":
+      - /url: https://github.com/your-org/serverless-cookbook/edit/main/docs/patterns/compute/lambda.md
+      - img
+    - link "View source of this page":
+      - /url: https://github.com/your-org/serverless-cookbook/raw/main/docs/patterns/compute/lambda.md
+      - img
+    - heading "Lambda ¶" [level=1]:
+      - text: Lambda
+      - link "¶":
+        - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#lambda
+    - paragraph: AWS Lambda lets you run code without provisioning or managing servers.
+    - link "View Source Repository":
+      - /url: https://github.com/terraform-aws-modules/terraform-aws-lambda
+    - separator
+    - heading "At a Glance ¶" [level=2]:
+      - text: At a Glance
+      - link "¶":
+        - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#at-a-glance
+    - table:
+      - rowgroup:
+        - row "Property Value":
+          - cell "Property"
+          - cell "Value"
+      - rowgroup:
+        - row "Examples 1 implementation pattern":
+          - cell "Examples":
+            - strong: Examples
+          - cell "1 implementation pattern"
+        - row "AWS Services lambda":
+          - cell "AWS Services":
+            - strong: AWS Services
+          - cell "lambda":
+            - code: lambda
+        - row "Primary Use Case AWS Lambda lets you run code without provisioning or managing servers.":
+          - cell "Primary Use Case":
+            - strong: Primary Use Case
+          - cell "AWS Lambda lets you run code without provisioning or managing servers."
+        - row "Source Repo terraform-aws-modules":
+          - cell "Source Repo":
+            - strong: Source Repo
+          - cell "terraform-aws-modules":
+            - link "terraform-aws-modules":
+              - /url: https://github.com/terraform-aws-modules/terraform-aws-lambda
+        - row "Category compute":
+          - cell "Category":
+            - strong: Category
+          - cell "compute"
+    - separator
+    - heading "When to Use Lambda ¶" [level=2]:
+      - text: When to Use Lambda
+      - link "¶":
+        - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#when-to-use-lambda
+    - paragraph: "Use Lambda when you need to:"
+    - list:
+      - listitem: AWS Lambda lets you run code without provisioning or managing servers.
+      - listitem: Build serverless applications with AWS Lambda
+      - listitem: Implement scalable, cost-effective solutions
+      - listitem: Follow infrastructure as code best practices
+    - separator
+    - heading "Architecture ¶" [level=2]:
+      - text: Architecture
+      - link "¶":
+        - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#architecture
+    - paragraph: Lambda is a key component of AWS serverless architecture. The implementation follows AWS best practices and uses the terraform-aws-modules for reliable, tested infrastructure components.
+    - heading "Implementation ¶" [level=2]:
+      - text: Implementation
+      - link "¶":
+        - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#implementation
+    - text: main.tf
+    - button "Copy to clipboard"
+    - code: "resource \"aws_lambda_function\" \"example\" {}"
+    - separator
+    - heading "Next Steps ¶" [level=2]:
+      - text: Next Steps
+      - link "¶":
+        - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#next-steps
+    - paragraph: Related Resources
+    - list:
+      - listitem:
+        - link "Official AWS Lambda Documentation":
+          - /url: https://docs.aws.amazon.com/
+      - listitem:
+        - link "Terraform AWS Provider Documentation":
+          - /url: https://registry.terraform.io/providers/hashicorp/aws/latest
+      - listitem:
+        - link "Source Repository":
+          - /url: https://github.com/terraform-aws-modules/terraform-aws-lambda
+    - separator
+    - heading "Contributing ¶" [level=2]:
+      - text: Contributing
+      - link "¶":
+        - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/lambda/#contributing
+    - paragraph:
+      - text: Found an issue or want to improve these patterns?
+      - link "Open an issue":
+        - /url: https://github.com/terraform-aws-modules/terraform-aws-lambda/issues
+      - text: or submit a pull request to the source repository.
+  - button "Back to top":
+    - img
+    - text: Back to top
+- contentinfo:
+  - navigation "Footer":
+    - 'link "Previous: Compute Patterns"':
+      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/compute/
+      - img
+      - text: Previous Compute Patterns
+    - 'link "Next: Integration Patterns"':
+      - /url: http://127.0.0.1:8000/serverless-cookbook/patterns/integration/
+      - text: Next Integration Patterns
+      - img
+  - text: Made with
+  - link "Material for MkDocs":
+    - /url: https://squidfunk.github.io/mkdocs-material/
+  - link "github.com":
+    - /url: https://github.com/your-org
+    - img
+  - link "twitter.com":
+    - /url: https://twitter.com/your-org
+    - img
+- progressbar
+```

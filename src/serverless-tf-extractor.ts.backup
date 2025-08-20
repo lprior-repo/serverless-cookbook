@@ -4,7 +4,6 @@ import { Octokit } from '@octokit/rest';
 import { config } from 'dotenv';
 import { fetchRepositoryReadme, extractRepositoryInfo } from './github-repository-service.js';
 import { validateGitHubToken } from './environment-validator.js';
-import { fetchTerraformExample, formatExampleAsMarkdown } from './terraform-example-fetcher.js';
 
 config();
 
@@ -13,8 +12,7 @@ const TerraformExampleSchema = z.object({
   url: z.string().url(),
   services: z.array(z.string()),
   code: z.string(),
-  description: z.string().optional(),
-  markdownContent: z.string().optional()
+  description: z.string().optional()
 });
 
 const TerraformVariableSchema = z.object({
@@ -42,7 +40,7 @@ const AWSServiceSchema = z.object({
   description: z.string(),
   repositoryUrl: z.string().url(),
   examplesUrl: z.string().url(),
-  terraformExamples: z.array(TerraformExampleSchema).readonly(),
+  terraformExamples: z.array(TerraformExampleSchema),
   documentation: TerraformDocumentationSchema
 });
 
@@ -158,89 +156,20 @@ export const buildAwsServicesCatalog = (): Effect.Effect<ReadonlyArray<AWSServic
       description: 'AWS Secrets Manager helps you manage, retrieve, and rotate secrets.',
       repositoryUrl: 'https://github.com/terraform-aws-modules/terraform-aws-secrets-manager',
       examplesUrl: 'https://github.com/terraform-aws-modules/terraform-aws-secrets-manager/tree/master/examples'
-    }),
-    createService({
-      serviceName: 'Amazon DynamoDB',
-      description: 'Amazon DynamoDB is a fully managed NoSQL database service.',
-      repositoryUrl: 'https://github.com/terraform-aws-modules/terraform-aws-dynamodb-table',
-      examplesUrl: 'https://github.com/terraform-aws-modules/terraform-aws-dynamodb-table/tree/master/examples'
     })
   ];
   
   return Effect.succeed(z.array(AWSServiceSchema).parse(services));
 };
 
-const fetchServiceExamples = (octokit: Readonly<Octokit>, service: Readonly<AWSService>): Effect.Effect<ReadonlyArray<TerraformExample>, never> =>
-  Effect.gen(function* () {
-    const repositoryInfo = yield* extractRepositoryInfo(service.repositoryUrl);
-    
-    // Get the list of examples from the repository
-    const examplesResponse = yield* Effect.tryPromise({
-      try: () => octokit.rest.repos.getContent({
-        owner: repositoryInfo.owner,
-        repo: repositoryInfo.repo,
-        path: 'examples'
-      }),
-      catch: () => new Error('Failed to fetch examples directory')
-    });
-
-    if (!Array.isArray(examplesResponse.data)) {
-      return [];
-    }
-
-    // Limit to first 3 examples to avoid rate limiting
-    const exampleDirs = examplesResponse.data
-      .filter((item: Readonly<{ type: string; name: string }>) => item.type === 'dir')
-      .slice(0, 3);
-
-    const examples = yield* Effect.all(
-      exampleDirs.map((dir: Readonly<{ name: string }>) =>
-        Effect.gen(function* () {
-          const examplePath = `examples/${dir.name}`;
-          const terraformFiles = yield* fetchTerraformExample(
-            octokit, 
-            repositoryInfo.owner, 
-            repositoryInfo.repo, 
-            examplePath
-          );
-          
-          const markdownContent = formatExampleAsMarkdown(terraformFiles);
-          
-          return {
-            title: `${service.serviceName} - ${dir.name}`,
-            url: `${service.repositoryUrl}/tree/master/${examplePath}`,
-            services: [service.serviceName.toLowerCase().replace(/\s+/g, '-')],
-            code: terraformFiles.files.find(f => f.name === 'main.tf')?.content || '',
-            description: `Example: ${dir.name}`,
-            markdownContent
-          };
-        }).pipe(
-          Effect.catchAll(() => Effect.succeed({
-            title: `${service.serviceName} - ${dir.name}`,
-            url: `${service.repositoryUrl}/tree/master/examples/${dir.name}`,
-            services: [service.serviceName.toLowerCase().replace(/\s+/g, '-')],
-            code: '',
-            description: `Example: ${dir.name} (failed to fetch)`
-          }))
-        )
-      )
-    );
-
-    return examples;
-  }).pipe(
-    Effect.catchAll(() => Effect.succeed([]))
-  );
-
 const enrichServiceWithDocumentation = (octokit: Readonly<Octokit>, service: Readonly<AWSService>): Effect.Effect<AWSService, never> =>
   Effect.gen(function* () {
     const repositoryInfo = yield* extractRepositoryInfo(service.repositoryUrl);
     
     const readme = yield* fetchRepositoryReadme(octokit, repositoryInfo.owner, repositoryInfo.repo);
-    const examples = yield* fetchServiceExamples(octokit, service);
     
     return {
       ...service,
-      terraformExamples: examples,
       documentation: {
         ...service.documentation,
         readme

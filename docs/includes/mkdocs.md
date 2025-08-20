@@ -1,0 +1,1 @@
+<!-- Common includes for the Serverless Terraform Cookbook -->

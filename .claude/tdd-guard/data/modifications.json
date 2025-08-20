@@ -1,11 +1,19 @@
 {
-  "session_id": "68ed9198-18b8-4008-853d-15fc65603786",
-  "transcript_path": "/home/family/.claude/projects/-home-family-src-serverless-cookbook/68ed9198-18b8-4008-853d-15fc65603786.jsonl",
+  "session_id": "447d37f3-70bf-4e87-bf56-233fe78d5e86",
+  "transcript_path": "/home/family/.claude/projects/-home-family-src-serverless-cookbook/447d37f3-70bf-4e87-bf56-233fe78d5e86.jsonl",
   "hook_event_name": "PostToolUse",
-  "tool_name": "Edit",
+  "tool_name": "MultiEdit",
   "tool_input": {
-    "file_path": "/home/family/.claude/CLAUDE.md",
-    "old_string": "- **100% Test Coverage**: Every function, branch, and edge case must have corresponding tests.",
-    "new_string": "- **100% Test Coverage**: Every function, branch, and edge case must have corresponding tests. NEVER use `--passWithNoTests` flag in Jest - this defeats the entire purpose of testing and is strictly forbidden."
+    "file_path": "/home/family/src/serverless-cookbook/docs/index.md",
+    "edits": [
+      {
+        "old_string": ":fontawesome-solid-rocket: Get Started",
+        "new_string": "🚀 Get Started"
+      },
+      {
+        "old_string": ":fontawesome-solid-cubes: Browse Patterns",
+        "new_string": "📦 Browse Patterns"
+      }
+    ]
   }
 }

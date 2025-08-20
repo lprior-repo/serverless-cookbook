@@ -152,11 +152,23 @@
         "variables": [],
         "outputs": []
       }
+    },
+    {
+      "serviceName": "Amazon DynamoDB",
+      "description": "Amazon DynamoDB is a fully managed NoSQL database service.",
+      "repositoryUrl": "https://github.com/terraform-aws-modules/terraform-aws-dynamodb-table",
+      "examplesUrl": "https://github.com/terraform-aws-modules/terraform-aws-dynamodb-table/tree/master/examples",
+      "terraformExamples": [],
+      "documentation": {
+        "readme": "",
+        "variables": [],
+        "outputs": []
+      }
     }
   ],
   "metadata": {
-    "generated_at": "2025-08-09T18:47:24.488Z",
-    "total_services": 12,
+    "generated_at": "2025-08-20T09:28:36.856Z",
+    "total_services": 13,
     "service_names": [
       "AWS Lambda",
       "AWS AppSync",
@@ -169,7 +181,8 @@
       "Amazon SNS",
       "AWS AppConfig",
       "AWS SSM Parameter Store",
-      "AWS Secrets Manager"
+      "AWS Secrets Manager",
+      "Amazon DynamoDB"
     ]
   }
 }

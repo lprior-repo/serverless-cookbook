@@ -5,9 +5,9 @@ import { enrichAwsServicesWithGitHubData } from './serverless-tf-extractor.js';
 const runScraper = (): Effect.Effect<Readonly<{
   services: ReadonlyArray<unknown>;
   metadata: Readonly<{
-    generated_at: string;
-    total_services: number;
-    service_names: ReadonlyArray<string>;
+    readonly generated_at: string;
+    readonly total_services: number;
+    readonly service_names: ReadonlyArray<string>;
   }>;
 }>, Error> =>
   Effect.gen(function* () {
